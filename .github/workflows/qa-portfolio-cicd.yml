@@ -1,0 +1,37 @@
+name: API Tests CI/CD
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  api-tests:
+    name: Run API Automation Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Run API Tests via Maven
+        run: mvn clean test -f api-testing/pom.xml
+
+      - name: Upload Allure Results Artifact
+        if: always() # Выполнять даже если тесты упадут
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: api-testing/target/allure-results
+          retention-days: 7
