@@ -1,17 +1,23 @@
-name: API Tests CI/CD
+name: QA Portfolio CI/CD
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: ['main', 'master']
   pull_request:
-    branches: [ "main", "master" ]
+    branches: ['main', 'master']
+  workflow_dispatch:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 jobs:
+  # ──────────────────────────────────────────────
+  # Джоб 1: API-тесты
+  # ──────────────────────────────────────────────
   api-tests:
-    name: Run API Automation Tests
+    name: API Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -25,13 +31,110 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Run API Tests via Maven
+      - name: Run API Tests
         run: mvn clean test -f api-testing/pom.xml
 
-      - name: Upload Allure Results Artifact
-        if: always() # Выполнять даже если тесты упадут
+      - name: Upload API Allure Results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results
+          name: allure-results-api
           path: api-testing/target/allure-results
           retention-days: 7
+
+  # ──────────────────────────────────────────────
+  # Джоб 2: UI-тесты
+  # ──────────────────────────────────────────────
+  ui-tests:
+    name: UI Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Install Chrome and dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq google-chrome-stable
+          google-chrome --version
+
+      - name: Run UI Tests
+        run: mvn clean test -f ui-testing/pom.xml
+
+      - name: Upload UI Allure Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-ui
+          path: ui-testing/target/allure-results
+          retention-days: 7
+
+  # ──────────────────────────────────────────────
+  # Джоб 3: Объединённый Allure-отчёт и деплой на GH Pages
+  # ──────────────────────────────────────────────
+  generate-and-deploy-report:
+    name: Generate & Deploy Allure Report
+    needs: [api-tests, ui-tests]
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Download API Allure Results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-api
+          path: all-results/api
+
+      - name: Download UI Allure Results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-ui
+          path: all-results/ui
+
+      - name: Merge Allure Results
+        run: |
+          mkdir -p allure-results
+          cp -r all-results/api/* allure-results/ 2>/dev/null || true
+          cp -r all-results/ui/* allure-results/ 2>/dev/null || true
+          echo "Merged files count: $(ls -1 allure-results/ | wc -l)"
+
+      - name: Install and Run Allure CLI
+        run: |
+          curl -sSL https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.zip -o allure.zip
+          unzip -q allure.zip -d ./allure
+          export PATH=$PATH:$(pwd)/allure/allure-2.25.0/bin
+          allure generate allure-results --clean -o allure-report
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Artifact for Deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./allure-report
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
