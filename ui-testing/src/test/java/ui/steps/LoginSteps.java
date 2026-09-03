@@ -6,7 +6,6 @@ import ui.pages.ProductsPage;
 
 /**
  * Слой шагов для действий на странице логина.
- * @Step формирует понятные шаги в Allure-отчёте.
  */
 public class LoginSteps {
 
