@@ -5,19 +5,21 @@
 ![Testing Framework](https://img.shields.io/badge/Stack-REST%20Assured%20%7C%20Selenide%20%7C%20JUnit%205-blue?style=for-the-badge)
 ![Report](https://img.shields.io/badge/Reports-Allure-yellow?style=for-the-badge&logo=qameta)
 
-Добро пожаловать в мой инженерный портфолио-репозиторий. Проект демонстрирует практическое применение современных подходов к автоматизации тестирования (API & UI), разработке тестовой документации и интеграции CI/CD процессов.
+Добро пожаловать в мой инженерный портфолио-репозиторий. Проект демонстрирует практическое применение современных подходов к автоматизации тестирования (API & UI), разработке тестовой документации, кроссплатформенного Game QA и интеграции CI/CD процессов.
 
 ---
 
 ## 🛠 Общий технологический стек
 
-* **Languages:** Java 17
+* **Languages:** Java 17, Dart
 * **API Test Automation:** REST Assured, Jackson, Lombok, AspectJ
 * **UI Test Automation:** Selenide (Selenium WebDriver Wrapper), Page Object Model
-* **Assertion Libraries:** AssertJ, JUnit 5 Assertions
-* **Test Runners & Build Tools:** JUnit 5, Apache Maven
+* **Game Test Automation:** Flutter Test, Flame Engine, Integration Test, Golden Tests
+* **Assertion Libraries:** AssertJ, JUnit 5 Assertions, Flutter Test Expect
+* **Test Runners & Build Tools:** JUnit 5, Apache Maven, Flutter Test
 * **Reporting & CI/CD:** Allure Report, GitHub Actions, GitHub Pages
 * **Test Management & Manual QA:** Test Cases, Checklists, Bug Reports (DevTools, Postman)
+* **Game QA:** Test Strategy, Risk Matrix, Cross-Platform Matrix, Playtest Feedback
 
 ---
 
@@ -28,7 +30,7 @@
 | [**`api-testing/`**](./api-testing) | API Test Automation | Java 17, REST Assured, JUnit 5, AssertJ, Allure | 🟢 Готов |
 | [**`ui-testing/`**](./ui-testing) | UI Test Automation | Java 17, Selenide, JUnit 5, Page Object Model, Allure | 🟢 Готов |
 | [**`manual-testing/`**](./manual-testing) | Manual Web QA | Test Plans, Test Cases, DevTools, Postman | 🟢 Готов |
-| [**`game-testing/`**](./game-testing) | Game QA & Bug Tracking | Game Testing, Exploratory Testing, Issue Tracking | 🟡 В разработке |
+| [**`game-testing/`**](./game-testing) | Game QA Case Study | Flutter, Flame, Test Strategy, Bug Reports, Playtests | 🟢 Готов |
 
 ---
 
@@ -61,6 +63,8 @@
   cd ui-testing && mvn clean test allure:serve
   ```
 
+---
+
 ### 3. 📋 Manual Web QA (`/manual-testing`)
 
 Ручное тестирование и тестовая документация для функционала «Корзина и оформление заказа» на **SauceDemo**.
@@ -72,9 +76,17 @@
 * **Статус покрытия:** 50% критических кейсов автоматизировано; оставшиеся ручные кейсы — из‑за низкого ROI автоматизации либо из‑за активных дефектов (ожидают исправления).
 * **Быстрый запуск:** артефакты находятся в папке manual-testing/ — это статические документы (Markdown), не требуют запуска тестов.
 
-### 4. 🎮 Game QA & Bug Tracking (`/game-testing`)
+---
 
-*В разработке.* Тестирование пазл-игры: исследовательское тестирование, баг-трекинг, отчетность.
+### 4. 🎮 Game QA Case Study (`/game-testing`)
+
+Полный цикл QA-инженерии для кроссплатформенной пазл-игры на **Flutter + Flame** (Web и Windows Desktop). Проект построен как реальный Case Study: от стратегии до плейтестов и автоматизации.
+
+* **Документация (6 артефактов):** Test Strategy с риск-матрицей, чек-лист игровых механик (Drag & Drop, коллизии, win/lose conditions), кроссплатформенная матрица (Web vs Windows), баг-репорты с аппаратными данными, обратная связь от плейтестов, план автоматизации на Dart.
+* **Специфика Game QA:** игровой цикл (`update()` / `render()`), lifecycle Flame-компонентов, обработка прерываний (пауза, сворачивание, потеря фокуса), сохранение прогресса.
+* **Сравнение графических движков:** методология тестирования Impeller vs Skia на Windows с метриками FPS, потребления памяти и визуальных артефактов.
+* **План автоматизации:** unit-тесты (ScoreManager, GameState), widget-тесты (Overlay-экраны), golden-тесты (визуальная регрессия на разных разрешениях), integration-тесты (E2E игровой цикл), performance-тесты (FPS benchmark).
+* **Быстрый запуск:** QA-документация в папке `game-testing/` — статические Markdown-файлы. Автотесты на Dart выполняются в рамках Flutter-проекта (`flutter test`).
 
 ---
 
@@ -88,7 +100,7 @@
 
 ---
 
-## 🚀 Быстрый старт (оба проекта)
+## 🚀 Быстрый старт
 
 ```bash
 # API тесты
@@ -96,6 +108,14 @@ cd api-testing && mvn clean test allure:serve
 
 # UI тесты
 cd ui-testing && mvn clean test allure:serve
+
+# Game QA — документация (Markdown)
+cd game-testing && cat README.md
+
+# Game QA — автотесты (Dart, в рамках Flutter-проекта)
+flutter test test/game/           # unit-тесты
+flutter test test/golden/         # golden-тесты
+flutter test integration_test/   # E2E-тесты
 ```
 
 ---
