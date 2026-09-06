@@ -1,6 +1,7 @@
 # 🎯 Comprehensive QA Engineering Portfolio (Java Suite)
 
 [![Java CI with Maven](https://github.com/Good-Andre/qa-portfolio-javasuite/actions/workflows/qa-portfolio-cicd.yml/badge.svg)](https://github.com/Good-Andre/qa-portfolio-javasuite/actions)
+![CI/CD](https://img.shields.io/badge/CI%2FCD-GitVerse-blue?style=for-the-badge&logo=github)
 ![Java Version](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=openid)
 ![Testing Framework](https://img.shields.io/badge/Stack-REST%20Assured%20%7C%20Selenide%20%7C%20JUnit%205-blue?style=for-the-badge)
 ![Report](https://img.shields.io/badge/Reports-Allure-yellow?style=for-the-badge&logo=qameta)
