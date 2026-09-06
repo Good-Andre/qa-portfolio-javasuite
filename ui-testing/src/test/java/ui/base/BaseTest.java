@@ -6,6 +6,7 @@ import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,12 +20,15 @@ public class BaseTest {
     static void globalSetup() {
         Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
-        /// для локальной отладки false
         Configuration.headless = true;
         Configuration.timeout = 10000;
         Configuration.pageLoadTimeout = 30000;
         Configuration.pollingInterval = 200;
         System.setProperty("selenide.driverManagerEnabled", "true");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        Configuration.browserCapabilities = options;
     }
 
     @BeforeEach
