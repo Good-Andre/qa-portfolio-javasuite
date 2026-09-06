@@ -5,7 +5,7 @@
 ![Testing Framework](https://img.shields.io/badge/Stack-REST%20Assured%20%7C%20Selenide%20%7C%20JUnit%205-blue?style=for-the-badge)
 ![Report](https://img.shields.io/badge/Reports-Allure-yellow?style=for-the-badge&logo=qameta)
 
-Добро пожаловать в мой инженерный портфолио-репозиторий. Проект демонстрирует практическое применение современных подходов к автоматизации тестирования (API & UI), разработке тестовой документации, кроссплатформенного Game QA и интеграции CI/CD процессов.
+Добро пожаловать в мой инженерный портфолио-репозиторий. Проект демонстрирует практическое применение современных подходов к автоматизации тестирования (API & UI), разработке тестовой документации, кроссплатформенного Game QA, мобильного тестирования и интеграции CI/CD процессов.
 
 ---
 
@@ -15,11 +15,13 @@
 * **API Test Automation:** REST Assured, Jackson, Lombok, AspectJ
 * **UI Test Automation:** Selenide (Selenium WebDriver Wrapper), Page Object Model
 * **Game Test Automation:** Flutter Test, Flame Engine, Integration Test, Golden Tests
+* **Mobile Test Automation:** Flutter Integration Test, Flutter Driver, Dart Test
 * **Assertion Libraries:** AssertJ, JUnit 5 Assertions, Flutter Test Expect
 * **Test Runners & Build Tools:** JUnit 5, Apache Maven, Flutter Test
 * **Reporting & CI/CD:** Allure Report, GitHub Actions, GitHub Pages
 * **Test Management & Manual QA:** Test Cases, Checklists, Bug Reports (DevTools, Postman)
 * **Game QA:** Test Strategy, Risk Matrix, Cross-Platform Matrix, Playtest Feedback
+* **Mobile QA:** Mobile Lifecycle, Touch Interactions, Network/Airplane Mode, Accessibility
 
 ---
 
@@ -31,6 +33,7 @@
 | [**`ui-testing/`**](./ui-testing) | UI Test Automation | Java 17, Selenide, JUnit 5, Page Object Model, Allure | 🟢 Готов |
 | [**`manual-testing/`**](./manual-testing) | Manual Web QA | Test Plans, Test Cases, DevTools, Postman | 🟢 Готов |
 | [**`game-testing/`**](./game-testing) | Game QA Case Study | Flutter, Flame, Test Strategy, Bug Reports, Playtests | 🟢 Готов |
+| [**`mobile-testing/`**](./mobile-testing) | Mobile QA Case Study | Flutter, Android/iOS, Lifecycle, Touch, Network, Accessibility | 🟢 Готов |
 
 ---
 
@@ -90,6 +93,17 @@
 
 ---
 
+### 5. 📱 Mobile QA Case Study (`/mobile-testing`)
+
+Подход к тестированию мобильного приложения (Flutter) на Android и iOS. Документация без запускаемого кода — фокус на мобильной специфику, которую сложно покрыть автотестами.
+
+* **Документация (5 артефактов):** Test Strategy с матрицей платформ (Android 11–14, iOS 15–17), чек-лист мобильных проверок (сенсор, жизненный цикл, сеть, доступность), баг-репорты с мобильными артефактами (logcat, скриншоты), обратная связь от плейтестов, план автоматизации на Dart.
+* **Специфика Mobile QA:** сенсорные взаимодействия (тапы, свайпы, пинч, мультитач), жизненный цикл (сворачивание, kill процесса, push-уведомления), офлайн-режим и слабый сигнал, энергопотребление, доступность (TalkBack/VoiceOver).
+* **План автоматизации:** unit-тесты (модели данных), widget-тесты (UI-компоненты), integration-тесты (E2E сценарии входа и игрового цикла), performance-тесты (FPS, память). Доступность и UX-оценки остаются ручными.
+* **Быстрый запуск:** QA-документация в папке `mobile-testing/` — статические Markdown-файлы. Автотесты на Dart выполняются в рамках Flutter-проекта (`flutter test integration_test/ -d android`).
+
+---
+
 ## 🔄 CI/CD
 
 Проект использует единый GitHub Actions workflow (`qa-portfolio-cicd.yml`):
@@ -115,7 +129,14 @@ cd game-testing && cat README.md
 # Game QA — автотесты (Dart, в рамках Flutter-проекта)
 flutter test test/game/           # unit-тесты
 flutter test test/golden/         # golden-тесты
-flutter test integration_test/   # E2E-тесты
+flutter test integration_test/    # E2E-тесты
+
+# Mobile QA — документация (Markdown)
+cd mobile-testing && cat README.md
+
+# Mobile QA — автотесты (Dart, в рамках Flutter-проекта)
+flutter test test/mobile/         # unit/widget-тесты
+flutter test integration_test/ -d android   # E2E на Android
 ```
 
 ---
